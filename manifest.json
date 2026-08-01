@@ -1,0 +1,11 @@
+{
+  "name": "Atlantis Three Sixty Zirakpur",
+  "short_name": "Atlantis 360",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0B1E36",
+  "theme_color": "#0B1E36",
+  "icons": [
+    { "src": "assets/img/favicon.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
