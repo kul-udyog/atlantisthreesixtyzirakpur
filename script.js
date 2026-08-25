@@ -169,6 +169,14 @@
   /* ---------------- Lead submission ---------------- */
   var ENDPOINT = 'https://script.google.com/macros/s/AKfycbzNC3OJcfzy2rOKHTqT0m3OGmWZ_R_OlMIv0X-ImnHhgk_4OnMsJ3Fzv6cnblgMjrM2-g/exec';
 
+  /* Call / WhatsApp quick-contact — number reconstructed at runtime so it
+     never appears as plain text in the page source. */
+  var QC_DIGITS = ['7','6','9','6','2','9','1','8','2','7'];
+  var QC_LOCAL = QC_DIGITS.join('');
+  var QC_CC = '91'; // India — confirm this is correct
+  var QC_TEL = 'tel:+' + QC_CC + QC_LOCAL;
+  var QC_WA = 'https://wa.me/' + QC_CC + QC_LOCAL;
+
   function pushDL(event, data){
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push(Object.assign({event: event}, data || {}));
@@ -221,6 +229,16 @@
 
       submitLead(payload);
       pushDL('atlantis360_form_submit', {source: source, configuration: payload.configuration || ''});
+
+      /* Quick-contact buttons: lead is captured above like any other
+         enquiry, then the visitor is carried through to the real call
+         or WhatsApp chat. */
+      if (source === 'whatsapp_widget'){
+        var waMsg = "Hi, I'm " + name + ". I'm interested in Atlantis Three Sixty, Zirakpur — please share the price list and floor plans.";
+        window.open(QC_WA + '?text=' + encodeURIComponent(waMsg), '_blank', 'noopener');
+      } else if (source === 'call_widget'){
+        window.location.href = QC_TEL;
+      }
 
       var isModal = form.id === 'modal-form';
       if (isModal){
